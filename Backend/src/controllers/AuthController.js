@@ -88,33 +88,18 @@ const requestRefeshToken = async (req, res) => {
             console.error("Error verifying refresh token:", err.message);
             return res.status(403).json("Token không hợp lệ hoặc hết hạn");
         }
-
-        // Log thông tin user từ refresh token
         console.log("Verified user:", user);
-
-        // Xóa refresh token cũ
         refeshTokens = refeshTokens.filter((token) => token !== refeshToken);
-
-        // Tạo token mới
         const newAccessToken = generateAccessToken(user);
         const newRefeshToken = generateRefeshToken(user);
-
-        // Kiểm tra token mới
-        console.log("New access token:", newAccessToken);
-        console.log("New refresh token:", newRefeshToken);
-
         if (!newAccessToken || !newRefeshToken) {
             console.error("Failed to generate new tokens.");
             return res.status(500).json("Không thể tạo token mới");
         }
-
-        // Thêm refresh token mới vào danh sách
         refeshTokens.push(newRefeshToken);
-
-        // Cài đặt cookie mới
         res.cookie("refeshToken", newRefeshToken, {
             httpOnly: true,
-            secure: false, // Đổi thành true nếu dùng HTTPS
+            secure: false, 
             path: '/',
             sameSite: "strict",
         });
