@@ -12,6 +12,7 @@ const TaiNanDB = new mongoose.Schema({
     hinhAnh:[String],
     moTa : String,
     linkBV: String,
+
 })
 TaiNanDB.statics.createTaiNan = async function (xeId, hinhAnh, moTa, linkBV) {
     const taiNan = new this({

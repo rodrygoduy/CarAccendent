@@ -27,28 +27,30 @@ let axiosJWT = createAxios(user,dispatch,loginSuccess)
     
   },[])
   return (
-    <main className="flex flex-col items-center justify-center bg-gray-200 h-[600px] w-[60%] text-center mt-12 mx-auto">
-        <div className="mt-4 text-2xl font-bold">User List</div>
-        <div className="flex justify-center flex-wrap items-center mt-4">
-            {Array.isArray(userList) && userList.length > 0 ? (
-                userList.map((user, index) => (
-                    <div key={index} className="flex flex-col items-center justify-center w-48 m-6">
-                        <div className="bg-gray-400 p-2 rounded-lg text-white">{user.username}</div>
+    <main className="flex flex-col items-center justify-center bg-gray-100  px-4">
+
+            <div className="text-3xl font-bold text-gray-800 mb-8">Danh sách người dùng</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+                {Array.isArray(userList) && userList.length > 0 ? (
+                    userList.map((user, index) => (
                         <div
-                            className="mt-4 text-base bg-pink-600 text-white px-2 py-1 rounded-lg cursor-pointer hover:bg-pink-700"
-                            onClick={() => {
-                                handleDelete(user._id);
-                            }}
+                            key={index}
+                            className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-between transform transition-transform hover:scale-105"
                         >
-                            Delete
+                            <div className="text-xl font-semibold text-gray-700 mb-2">{user.username}</div>
+                            <button
+                                className="mt-4 text-sm bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                                onClick={() => handleDelete(user._id)}
+                            >
+                                Xóa
+                            </button>
                         </div>
-                    </div>
-                ))
-            ) : (
-                <div>No users found.</div>
-            )}
-        </div>
-    </main>
+                    ))
+                ) : (
+                    <div className="text-gray-500 text-lg">Không có người dùng nào được tìm thấy.</div>
+                )}
+            </div>
+            </main>
 );
 
 };

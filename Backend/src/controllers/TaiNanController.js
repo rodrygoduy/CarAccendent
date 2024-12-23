@@ -1,11 +1,15 @@
 import axios from 'axios';
 import Xe from '../models/xe.js';
 import TaiNan from '../models/TaiNan.js';
+import LichSuTimKiem from '../models/LichSu.js';
 
 const getXeTaiNan = async (req, res) => {
     const bienSo = req.query.bienSo;
     console.log(bienSo);
-
+    const userId = req.user?.id
+    if(userId){
+      console.log("đã đăng nhập có id",userId)
+    }
     if (!bienSo) {
         return res.status(400).json({ error: 'Biển số xe là bắt buộc.' });
     }
@@ -20,6 +24,13 @@ const getXeTaiNan = async (req, res) => {
                 }else{
                     return `http://localhost:5000/uploads/${img}` }
               });
+              if (userId) {
+                await LichSuTimKiem.create({
+                    userId,
+                    bienSoTimKiem: bienSo,
+                    tainanTimKiem: `Tai nạn: ${taiNan.moTa}`,
+                });
+            }
             return res.status(200).json({xe,taiNan})
         }
         const response = await axios.get(`https://checkoto.vn/api/tra-cuu-xe-tai-nan.php?bienso=${bienSo}`);
@@ -44,7 +55,13 @@ const getXeTaiNan = async (req, res) => {
             }
             taiNan = await TaiNan.createTaiNan(taiNanData.xe, taiNanData.hinhAnh, taiNanData.moTa,taiNanData.linkBV);
         }
-        
+        if(userId){
+          await LichSuTimKiem.create({
+            userId,
+            bienSoTimKiem:bienSo,
+            tainanTimKiem:taiNan ? `Tai nạn: ${taiNan.moTa}` : "Không có tai nạn",
+          })
+        }
         res.status(200).json({ xe, taiNan });
     } catch (error) {
         console.error('Lỗi khi gọi API từ checkoto.vn:', error);

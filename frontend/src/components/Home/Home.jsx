@@ -4,6 +4,7 @@ import {notification} from 'antd'
 import ThongTinTN from '../More/ThongTinTN';
 import BangTin from '../More/BangTin';
 import DongGopDuLieu from '../More/DongGopDuLieu';
+import {useDispatch, useSelector} from 'react-redux'
 
 const Home = () =>{
     const [bienSo, setBienSo] = useState('')
@@ -11,6 +12,8 @@ const Home = () =>{
     const [taiNanData, setTaiNanData]= useState('null')
     const [isVisible, setIsVisible] = useState(false);
     
+    const user = useSelector((state) => state.auth.login.currentUser);
+
     const handleBienSo = (e) => {
       setBienSo(e.target.value)
     }
@@ -26,7 +29,10 @@ const Home = () =>{
         return;
       }
       try{
-        const reponse = await axios.get(`/home/tai-nan?bienSo=${bienSo}`)
+        const headers = user?.accessToken ? { token: `Bearer ${user.accessToken}` } : {};
+        const reponse = await axios.get(`/home/tai-nan?bienSo=${bienSo}`,{
+          headers
+        })
         console.log(reponse)
         if (reponse.data && reponse.data.xe && reponse.data.taiNan) {
           setXeData(reponse.data.xe);
@@ -57,8 +63,12 @@ const Home = () =>{
       <div class="w-max mx-auto font-bold text-5xl text-center">Tra cứu xe tai nạn</div>
         <div class="mx-auto block w-max flex flex-col items-center">
           <input type="text" placeholder="Nhập biển số xe..." class="mt-6 p-3 w-80 border border-gray-300 rounded-lg text-lg" onChange={handleBienSo}/>
+          <p className="text-red-500 italic text-1xl mt-2">Lưu ý: Biển số có dạng 34A12345</p>
           <button class=" bg-blue-500 text-white rounded-lg mt-6 p-3 w-80 border border-gray-300 rounded-lg text-lg" onClick={SubMit}>Tra Cứu</button>
         </div>
+        <div className="mt-4 flex justify-start ">
+          <p className="text-black font-bold px-20 text-3xl"> Một số vụ tai nạn mới được cập nhật: </p>
+      </div>
         {isVisible && xeData && taiNanData && (
         <ThongTinTN xeData={xeData} taiNanData={taiNanData} onClose={onClose} onOpen ={onOpen} />
       )}

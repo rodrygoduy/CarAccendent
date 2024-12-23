@@ -92,10 +92,6 @@ console.log("User ID:", id);
           navigate('/')
     }catch(err){
         dispatch(loginFailed())
-        notification.error({
-            message: 'Failed',
-            description: 'Logout thất bại',
-            placement: 'topRight',
-        });
+        
     }
 }

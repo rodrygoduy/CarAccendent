@@ -31,9 +31,9 @@ const Navbar = () => {
   const userMenu=(
     <Menu>
       <Menu.Item icon={<UserOutlined />}>
-        <Link >Lịch sử kiếm </Link> 
+        <Link to="/lichsu">Lịch sử kiếm </Link> 
       </Menu.Item>
-      <Menu.Item icon={<LogoutOutlined />} >
+      <Menu.Item icon={<LogoutOutlined />} onClick={handleLogout} >
         Đăng xuất
       </Menu.Item>
     </Menu>
@@ -46,9 +46,13 @@ const Navbar = () => {
         </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="/tra-dang-kiem" className="dropdown-item text-2xl">
-          Tra cứu đăng kiểm
-        </Link>
+      <a
+        href="http://app.vr.org.vn/ptpublic/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="dropdown-item text-2xl"   >
+        Tra cứu đăng kiểm
+    </a>
       </Menu.Item>
     </Menu>
   );
@@ -82,7 +86,7 @@ const Navbar = () => {
               </a> 
           </Dropdown>
           <Link to="/gioi-thieu" className="hover:text-yellow-400">   Giới thiệu </Link>
-          <Link to="/lien-he" className="hover:text-yellow-400">   Liên hệ  </Link>
+   
         </div>
 
 

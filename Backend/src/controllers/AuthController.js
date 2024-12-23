@@ -18,15 +18,14 @@ const registerUser =async (req, res)=>{
     }catch(error){
         res.status(500).json(error)
     }
-
-}
+} 
 const generateAccessToken = (user)=>{
     return jwt.sign({
         id: user.id,
         admin:user.admin
     },
     process.env.JWT_ACCESS_key,
-    {expiresIn:"20s"}
+    {expiresIn:"20d"}
 );
 }
 const generateRefeshToken = (user)=>{
@@ -88,7 +87,6 @@ const requestRefeshToken = async (req, res) => {
             console.error("Error verifying refresh token:", err.message);
             return res.status(403).json("Token không hợp lệ hoặc hết hạn");
         }
-        console.log("Verified user:", user);
         refeshTokens = refeshTokens.filter((token) => token !== refeshToken);
         const newAccessToken = generateAccessToken(user);
         const newRefeshToken = generateRefeshToken(user);

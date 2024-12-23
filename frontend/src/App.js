@@ -7,6 +7,8 @@ import PhatNguoi from './components/Home/PhatNguoi';
 import Login from './components/Login/Login';
 import Register from './components/Login/Register';
 import QLUser from './components/More/QLUser';
+import LichSu from './components/More/LichSu';
+import Footer from './components/Home/Footer';
 const App = () => {
   const location = useLocation();
 
@@ -26,9 +28,12 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/qluser" element={<QLUser />} />
+          <Route path="/lichsu" element={<LichSu></LichSu>} />
+
 
           <Route path="*" element={<h2>404 - Trang không tồn tại</h2>} />
         </Routes>
+        <Footer></Footer>
       </div>
     </div>
   );
