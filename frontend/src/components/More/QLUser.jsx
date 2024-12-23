@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { deleteUser, getAllUsers } from "../../redux/apiRequest";
 import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -6,17 +6,26 @@ import { useNavigate } from "react-router-dom";
 import { createAxios } from "../../createInstance";
 import { loginSuccess } from "../../redux/authSlice";
 const QLUser = () => {
-    
+    const [localUserList, setLocalUserList] = useState([]);
     const user = useSelector((state)=>state.auth.login?.currentUser)
     const dispatch = useDispatch()
     const navigate = useNavigate()
   const userList = useSelector((state)=>state.user.users?.allUsers)
 let axiosJWT = createAxios(user,dispatch,loginSuccess)
-  
-  const handleDelete= (id)=>{
-    deleteUser(user?.accessToken,dispatch,id,axiosJWT)
-  }
-
+useEffect(() => {
+    if (user?.accessToken) {
+      getAllUsers(user?.accessToken, dispatch, axiosJWT).then((users) => {
+        setLocalUserList(users);
+      });
+    }
+  }, []);
+  const handleDelete = (id) => {
+    deleteUser(user?.accessToken, dispatch, id, axiosJWT).then((result) => {
+      if (result) {
+        setLocalUserList(localUserList.filter((user) => user._id !== id));
+      }
+    });
+  };
   useEffect(()=>{
     if(!user){
         navigate("/")
