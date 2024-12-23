@@ -9,6 +9,7 @@ import Register from './components/Login/Register';
 import QLUser from './components/More/QLUser';
 import LichSu from './components/More/LichSu';
 import Footer from './components/Home/Footer';
+import DuyetBai from './components/More/DuyetBai';
 const App = () => {
   const location = useLocation();
 
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/qluser" element={<QLUser />} />
           <Route path="/lichsu" element={<LichSu></LichSu>} />
+          <Route path="/duyetbai" element={<DuyetBai></DuyetBai>}/>
 
 
           <Route path="*" element={<h2>404 - Trang không tồn tại</h2>} />

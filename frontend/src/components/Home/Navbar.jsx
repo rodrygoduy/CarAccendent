@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Dropdown, Menu, Button } from "antd";
-import { DownOutlined, LoginOutlined, UserAddOutlined,UserOutlined ,LogoutOutlined } from '@ant-design/icons';
+import { DownOutlined, LoginOutlined, UserAddOutlined,UserOutlined ,LogoutOutlined,DiffOutlined } from '@ant-design/icons';
 import {useDispatch, useSelector} from 'react-redux'
 import { logOut } from "../../redux/apiRequest";
 import { createAxios } from "../../createInstance";
@@ -22,6 +22,9 @@ const Navbar = () => {
     <Menu>
       <Menu.Item icon={<UserOutlined />}>
         <Link to="/qluser">Quản lý</Link> 
+      </Menu.Item>
+      <Menu.Item icon={<DiffOutlined />}>
+        <Link to="/duyetbai">Duyệt bài</Link> 
       </Menu.Item>
       <Menu.Item icon={<LogoutOutlined />} onClick={handleLogout}>
         Đăng xuất

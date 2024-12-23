@@ -10,4 +10,7 @@ router.post('/phatnguoi',postPhatNguoi)
 router.get('/tai-nan-all',TaiNanController.getTaiNan)
 router.post('/dongGopDuLieu',upload.single('hinhAnh'),TaiNanController.dongGopDuLieu)
 
+router.get('/xetDuyet',authMiddleware.verifyTokenAndAdmin,upload.single('hinhAnh'),TaiNanController.getTaiNanChoDuyet)
+router.delete("/tai-nan/:id",authMiddleware.verifyTokenAndAdmin,TaiNanController.deleteTaiNan)
+router.patch('/xetDuyet/done/:id',authMiddleware.verifyTokenAndAdmin,TaiNanController.doneTaiNan)
 export default router

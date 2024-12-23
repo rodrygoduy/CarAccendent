@@ -27,7 +27,7 @@ const authMiddleware ={
             }
         })
     },
-    verifyTokenAndAdmin: (req, res, next) => { //quyền admin
+    verifyTokenAndAdmin: (req, res, next) => { // chỉ có quyền admin
         authMiddleware.verifyToken(req, res, () => {
             if (req.user.admin) {
                 next();

@@ -53,7 +53,7 @@ const getXeTaiNan = async (req, res) => {
                 moTa: decodeURIComponent(data.detail) || 'Không có mô tả',
                 linkBV: data.source|| 'Không có nguồn'
             }
-            taiNan = await TaiNan.createTaiNan(taiNanData.xe, taiNanData.hinhAnh, taiNanData.moTa,taiNanData.linkBV);
+            taiNan = await TaiNan.createTaiNan(taiNanData.xe, taiNanData.hinhAnh, taiNanData.moTa,taiNanData.linkBV,true);
         }
         if(userId){
           await LichSuTimKiem.create({
@@ -91,7 +91,7 @@ const dongGopDuLieu = async (req, res) => {
       if (!xe) {
         xe = await Xe.createXe(bienSo);
       }
-      const taiNan = await TaiNan.createTaiNan(xe._id, hinhAnh, moTa, linkBV);
+      const taiNan = await TaiNan.createTaiNan(xe._id, hinhAnh, moTa, linkBV,false);
   
       return res.status(201).json({
         message: 'Vụ tai nạn đã được đóng góp thành công',
@@ -102,5 +102,35 @@ const dongGopDuLieu = async (req, res) => {
       return res.status(500).json({ message: 'Lỗi khi xử lý dữ liệu.' });
     }
   };
-
-export default { getXeTaiNan, getTaiNan,dongGopDuLieu};
+const getTaiNanChoDuyet = async(req,res)=>{
+  try {
+    const z = await TaiNan.getTaiNanChoDuyet();
+    res.status(200).json(z);
+  }catch(error) {
+    console.error('Lỗi khi lấy danh sách tai nạn chờ duyệt:', error);
+    res.status(500).json({ error: 'Lỗi khi lấy danh sách tai nạn chờ duyệt.' });
+}}
+const deleteTaiNan = async (req, res) => {
+  const { id } = req.params;
+  try {
+      const taiNan = await TaiNan.findByIdAndDelete(id);
+      res.status(200).json({
+          message: 'Tai nạn đã được xóa thành công.'  });
+  } catch (error) {
+      console.error('Lỗi khi xóa tai nạn:', error);
+      res.status(500).json({ error: 'Lỗi khi xóa tai nạn.' });
+  }
+};
+const doneTaiNan = async(req,res)=>{
+    const { id } = req.params; 
+    try {
+        const taiNan = await TaiNan.xacNhanTaiNan(id); 
+        return res.status(200).json({
+            message: 'Tai nạn đã được duyệt thành công.',
+            taiNan, });
+    } catch (error) {
+        console.error('Lỗi khi duyệt tai nạn:', error);
+        return res.status(500).json({ error: 'Lỗi khi duyệt tai nạn.' });
+    }
+}
+export default { getXeTaiNan, getTaiNan,dongGopDuLieu,getTaiNanChoDuyet,deleteTaiNan,doneTaiNan};
